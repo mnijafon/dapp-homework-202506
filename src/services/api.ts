@@ -10,6 +10,7 @@ export interface ApiResponse<T = any> {
 export const API_CONFIG = {
     // 主要API端点
     AI_CHAT_ENDPOINT: 'https://cloudflare-work.liujifeng8106.workers.dev',
+    // AI_CHAT_ENDPOINT: 'http://127.0.0.1:8787',
 
     // 其他可能的端点
     USER_ENDPOINT: '/api/user',
