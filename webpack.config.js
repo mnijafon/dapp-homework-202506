@@ -31,6 +31,23 @@ const webpackBaseConfig = {
         path: resolve(__dirname, 'dist'),
     },
     resolve: {
+        // 配置路径别名，运行时或打包时才不会报错
+        alias: {
+            '@': resolve('src/'),
+            '@components': resolve('src/components'),
+            '@hooks': resolve('src/hooks'),
+            '@pages': resolve('src/pages'),
+            '@layouts': resolve('src/layouts'),
+            '@assets': resolve('src/assets'),
+            '@states': resolve('src/states'),
+            '@service': resolve('src/service'),
+            '@utils': resolve('src/utils'),
+            '@lib': resolve('src/lib'),
+            '@constants': resolve('src/constants'),
+            '@connections': resolve('src/connections'),
+            '@abis': resolve('src/abis'),
+            '@types': resolve('src/types'),
+        },
         extensions: ['.ts', '.tsx', '.js', '.jsx'], // 添加这个
     },
     // 模块处理规则

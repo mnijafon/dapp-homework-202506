@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Copy, Trash2, RotateCcw } from 'lucide-react';
-import { AIApiService } from '../services/api';
+import { AIApiService } from '@service/api';
 
 // 消息类型定义
 type Message = {
@@ -62,7 +62,7 @@ const AIChat: React.FC = () => {
         sender: 'ai',
         content: response.success && response.data
             ? response.data
-            : response.error || '抱歉，我现在无法回应。请稍后重试。',
+            : '抱歉，我现在无法回应。请稍后重试。',
         timestamp: new Date(),
       };
 
@@ -81,6 +81,18 @@ const AIChat: React.FC = () => {
     } finally {
       setIsThinking(false);
       inputRef.current?.focus();
+    }
+  };
+
+  // 处理键盘事件
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) {
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
     }
   };
 
@@ -126,7 +138,7 @@ const AIChat: React.FC = () => {
         sender: 'ai',
         content: response.success && response.data
             ? response.data
-            : response.error || '抱歉，我现在无法回应。请稍后重试。',
+            : '抱歉，我现在无法回应。请稍后重试。',
         timestamp: new Date(),
       };
 
@@ -148,14 +160,14 @@ const AIChat: React.FC = () => {
   };
 
   return (
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto p-4">
         {/* 聊天容器 */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
           {/* 聊天头部 */}
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center">
                   <Bot className="w-6 h-6" />
                 </div>
                 <div>
@@ -166,7 +178,7 @@ const AIChat: React.FC = () => {
 
               <button
                   onClick={clearChat}
-                  className="p-3 hover:bg-white/20 rounded-lg transition-all duration-200 group"
+                  className="p-3 hover:bg-white hover:bg-opacity-20 rounded-lg transition-all duration-200 group"
                   title="清空聊天"
               >
                 <Trash2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -175,7 +187,7 @@ const AIChat: React.FC = () => {
           </div>
 
           {/* 聊天内容区域 */}
-          <div className="h-[600px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-50 to-white">
+          <div className="h-96 md:h-[600px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-50 to-white">
             {messages.map((msg, index) => (
                 <div
                     key={msg.id}
@@ -258,8 +270,8 @@ const AIChat: React.FC = () => {
                   <div className="bg-white border border-slate-200 p-4 rounded-2xl rounded-bl-md shadow-md max-w-[70%]">
                     <div className="flex space-x-2">
                       <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce"></div>
-                      <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce delay-100"></div>
+                      <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce delay-200"></div>
                     </div>
                     <p className="text-slate-500 text-sm mt-2">正在思考中...</p>
                   </div>
@@ -278,9 +290,11 @@ const AIChat: React.FC = () => {
                     type="text"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder="输入您的问题..."
                     disabled={isThinking}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    maxLength={1000}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:border-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               <button
