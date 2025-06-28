@@ -1,3 +1,4 @@
+// 使用html模板文件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve, join } = require('path');
 // 编译运行时控制台输出信息
@@ -20,6 +21,13 @@ module.exports = {
         // 启用 Hot Module Replacement (HMR)，即热更新。
         hot: true,
         port,
+        // proxy: [
+        //     {
+        //         context: ['/api'],
+        //         target: 'http://localhost:3001',
+        //         changeOrigin: true,
+        //     },
+        // ],
     },
     output: {
         publicPath: '/',

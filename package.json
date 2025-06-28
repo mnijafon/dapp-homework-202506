@@ -13,7 +13,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky",
     "test": "jest --collectCoverage --reporters default jest-stare",
-    "test:ui": "majestic"
+    "test:ui": "majestic",
+    "typechain": "typechain --target ethers-v6 --out-dir src/types/contracts src/abis/*.json"
   },
   "private": true,
   "keywords": [],
@@ -35,6 +36,7 @@
     "@typescript-eslint/parser": "6",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.2",
     "eslint": "8",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^10.1.5",
@@ -56,7 +58,9 @@
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.6",
     "tailwindcss": "^4.1.10",
+    "terser-webpack-plugin": "^5.3.14",
     "themed-progress-plugin": "^1.0.1",
+    "typechain": "^8.3.2",
     "typescript": "5.3",
     "webpack": "^5.99.9",
     "webpack-bundle-analyzer": "^4.10.2",

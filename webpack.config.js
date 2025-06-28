@@ -10,6 +10,7 @@ const _mode = argv.mode || 'development';
 const _mergeConfig = require(`./config/webpack.${_mode}.js`);
 // 在每次构建前自动清理输出目录（如 dist），避免旧文件残留。
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// 将 CSS 代码从 JavaScript 包中分离出来，生成独立的 CSS 文件
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const _modeflag = _mode === 'production' ? true : false;
 // const ProgressBarPlugin = require('progress-bar-webpack-plugin');
@@ -71,8 +72,10 @@ const webpackBaseConfig = {
                 use: [
                     // style-loader：将 CSS 以 <style> 标签插入 HTML（开发环境常用）。MiniCssExtractPlugin：生成单独的 CSS 文件（生产环境优化）。
                     MiniCssExtractPlugin.loader,
-                    // 'style-loader',
+                    // 'style-loader'，先让postcss-loader处理@import的文件。Webpack 加载器按从后到前的顺序执行
                     { loader: 'css-loader', options: { importLoaders: 1 } },
+                    // 使用 PostCSS 插件转换 CSS，例如添加浏览器前缀（通过autoprefixer）、处理 CSS Modules、压缩 CSS 等。
+                    // 自动添加浏览器前缀（如-webkit-, -moz-）、使用未来的 CSS 特性（通过 Babel-like 转换）、压缩或优化 CSS
                     // 使用postcss-loader后，tailwindcss才能生效
                     'postcss-loader',
                 ],
@@ -86,7 +89,6 @@ const webpackBaseConfig = {
     // },
     // 插件配置
     plugins: [
-        new CleanWebpackPlugin(),
         /**
          * 将 CSS 从 JS 包中提取到独立的文件（如 main.css），而非内联到 JS 中。将CSS和JS分开，并行加载：浏览器可同时下载 CSS 和 JS，减少首屏加载时间。
          * 文件体积：通过 CSS 压缩工具（如 css-minimizer-webpack-plugin）进一步减小体积。
@@ -99,6 +101,7 @@ const webpackBaseConfig = {
             chunkFilename: _modeflag ? 'styles/[name].[contenthash:5].css' : 'styles/[name].css',
             ignoreOrder: false,
         }),
+        new CleanWebpackPlugin(),
         new ThemedProgressPlugin(),
     ]
 };

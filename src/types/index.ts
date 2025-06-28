@@ -1,10 +1,3 @@
-// 通用类型定义
-
-// 页面类型
-export type PageType = 'chat';
-// 后续扩展功能类型可以在这里添加：
-// export type PageType = 'chat' | 'newFeature';
-
 // 消息类型
 export interface Message {
     id: string;

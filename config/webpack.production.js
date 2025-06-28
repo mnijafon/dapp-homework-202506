@@ -1,9 +1,10 @@
+// 使用html模板文件
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // 开启JS多线程的压缩
 const TerserPlugin = require('terser-webpack-plugin');
 // 开启CSS多线程的压缩
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { join, resolve } = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // 整站离线缓存
 // const WorkboxPlugin = require('workbox-webpack-plugin');
@@ -20,6 +21,7 @@ module.exports = {
         maxEntrypointSize: 250000, // 最大入口资源大小250KB
         hints: 'warning', // 超出限制时只给出警告
     },
+    // 多线程压缩
     optimization: {
         minimize: true,
         minimizer: [
