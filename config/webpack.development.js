@@ -51,6 +51,7 @@ module.exports = {
                 notes: ['💊 构建信息请及时关注窗口右上角'],
             },
             // new WebpackBuildNotifierPlugin({
+
             //   title: '💿 Solv Dvelopment Notification',
             //   logo,
             //   suppressSuccess: true,
