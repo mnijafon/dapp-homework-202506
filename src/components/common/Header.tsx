@@ -3,7 +3,7 @@ import { Wallet, Home, MessageCircle } from 'lucide-react';
 import { useConnect } from '@/hooks/useConnect';
 
 const Header = () => {
-  const { isWalletConnected, account, connectWallet, disconnectWallet } = useConnect();
+  const { isWalletConnected, account, connectWallet, disconnectWallet, isLoading } = useConnect();
   const location = useLocation();
 
   const handleConnectWallet = () => {
@@ -79,20 +79,23 @@ const Header = () => {
           {/* 右侧钱包连接按钮 */}
           <div className="flex items-center">
             <button
-              onClick={handleConnectWallet}
-              className={`
+                onClick={handleConnectWallet}
+                disabled={isLoading || isWalletConnected}
+                className={`
                 flex items-center px-4 py-2 rounded-lg
                 transition-colors duration-200
-                ${
-                  isWalletConnected
+                ${isWalletConnected
                     ? 'bg-green-50 text-green-700 hover:bg-green-100'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }
+                    : 'bg-blue-600 text-white hover:bg-blue-700'}
+                ${isLoading || isWalletConnected ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}
               `}
             >
               <Wallet className="w-5 h-5 mr-2" />
-              <span>{isWalletConnected ? '已连接钱包' : '连接钱包'}</span>
+              {isLoading ? '连接中...' : isWalletConnected ? '已连接' : '连接钱包'}
             </button>
+
+            {account && <p>当前账户：{account}</p>}
+
           </div>
         </div>
       </div>
